@@ -5,7 +5,7 @@ module SystemStatus
     def self.get_stats
       @output = {}
 
-      Timeout::timeout(5) {
+      Timeout::timeout(2) {
 
         threads = []
         @disk_used = self.disk_used
@@ -60,7 +60,7 @@ module SystemStatus
     # Show the percentage of CPU used
     def self.cpu_used
       proc0 = File.readlines('/proc/stat').grep(/^cpu /).first.split(" ")
-      sleep 1
+      sleep 0.2
       proc1 = File.readlines('/proc/stat').grep(/^cpu /).first.split(" ")
 
       proc0_usagesum = proc0[1].to_i + proc0[2].to_i + proc0[3].to_i
@@ -79,7 +79,7 @@ module SystemStatus
 
       cpu_usage = (proc_usage.to_f / proc_total.to_f)
 
-      (100 * cpu_usage).to_f.round(2)
+      (500 * cpu_usage).to_f.round(2)
     end
 
     # return hash of top ten proccesses by cpu consumption
@@ -179,11 +179,11 @@ module SystemStatus
     def self.bandwidth_rec
 
       new0 = self.bandrx
-      sleep 1
+      sleep 0.2
       new1 = self.bandrx
 
       bytes_received = new1[0].to_i - new0[0].to_i
-      bits_received = (bytes_received * 8)
+      bits_received = (bytes_received * 8 * 5)
 
       (bits_received.to_f / 1024 / 1024).round(3)
     end
@@ -235,11 +235,11 @@ module SystemStatus
     def self.bandwidth_sent
 
       new0 = self.bandtx
-      sleep 1
+      sleep 0.2
       new1 = self.bandtx
 
       bytestransmitted = new1[1].to_i - new0[1].to_i
-      bitstransmitted = (bytestransmitted * 8)
+      bitstransmitted = (bytestransmitted * 8 * 5)
       (bitstransmitted.to_f / 1024 / 1024).round(3)
     end
 
@@ -288,20 +288,20 @@ module SystemStatus
     def self.diskioreads
 
       new0 = self.diskio
-      sleep 1
+      sleep 0.2
       new1 = self.diskio
 
-      new1[0].to_i - new0[0].to_i
+      (new1[0].to_i - new0[0].to_i) * 5
     end
 
     # Current Disk Writes Completed
     def self.diskiowrites
 
       new0 = self.diskio
-      sleep 1
+      sleep 0.2
       new1 = self.diskio
 
-      new1[1].to_i - new0[1].to_i
+      (new1[1].to_i - new0[1].to_i) * 5
     end
 
   end
