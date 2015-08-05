@@ -10,4 +10,6 @@ else
 end
 
 module SystemStatus
+  module Stats
+  end
 end
