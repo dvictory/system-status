@@ -5,7 +5,7 @@ os = RUBY_PLATFORM
 if os.include? "linux"
   require "system_status/stats"
 else
-  class SystemStatus
+  class SystemStatus::Stats
     def self.get_stats
       {error: "OS not supported"}
     end
@@ -13,6 +13,5 @@ else
 end
 
 module SystemStatus
-  module Stats
-  end
+
 end
