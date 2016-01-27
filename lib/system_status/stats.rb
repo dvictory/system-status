@@ -14,11 +14,11 @@ module SystemStatus
         @mem_top = self.mem_top
         @load = self.load
 
-        threads << Thread.new { @cpu_used = self.cpu_used }
-        threads << Thread.new { @bandwith_rec = self.bandwidth_rec }
-        threads << Thread.new { @bandwith_sent = self.bandwidth_sent }
-        threads << Thread.new { @disk_writes = self.diskiowrites }
-        threads << Thread.new { @disk_reads = self.diskioreads }
+        threads << Thread.new { @cpu_used = self.cpu_used rescue "unsupported"}
+        threads << Thread.new { @bandwith_rec = self.bandwidth_rec rescue "unsupported"}
+        threads << Thread.new { @bandwith_sent = self.bandwidth_sent rescue "unsupported" }
+        threads << Thread.new { @disk_writes = self.diskiowrites rescue "unsupported"}
+        threads << Thread.new { @disk_reads = self.diskioreads rescue "unsupported"}
         threads.each { |thr| thr.join }
 
         @output = {
